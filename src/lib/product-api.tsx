@@ -182,3 +182,57 @@ export async function UpdateProduct(id: string, Data: { [key: string]: unknown }
         return false
     }
 }
+
+export async function UpdateVariants(id: string, Data: { [key: string]: unknown[] }) {
+    const loadingToast = toast.loading("Miss a jour en cours ...", { position: "bottom-right", hideProgressBar: true })
+    try {
+        const payload = {
+            updates: Data, // ✅ wrap it under the 'updates' key
+        };
+        const response = await apiRequest(`/products/variants/${id}`, {
+            method: "PATCH",
+            body: JSON.stringify(payload),
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        if (response.code == 200) {
+            toast.update(loadingToast, {
+                render: "Produit a Miss a jour",
+                type: "success",
+                isLoading: false,
+                autoClose: 3000,
+            })
+            return true
+        } else {
+            toast.update(loadingToast, {
+                render: (
+                    <div className="w-full flex items-center justify-between">
+                        {response.message}
+                        {response.code === 401 &&
+                            <button
+                                onClick={() => redirect("/signin")}
+                                className="bg-blue-600 hover:bg-blue-500 text-white rounded-xl p-1"
+                            >
+                                Login
+                            </button>
+                        }
+                    </div>
+                ),
+                type: "error",
+                isLoading: false,
+                autoClose: 3000,
+                // ...(res.code === 401 && { onClick: () => redirect("/signin") }),
+            })
+            return false
+        }
+    } catch {
+        toast.update(loadingToast, {
+            render: "Problem connection",
+            type: "error",
+            isLoading: false,
+            autoClose: 3000,
+        })
+        return false
+    }
+}

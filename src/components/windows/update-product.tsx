@@ -150,7 +150,7 @@ export default function UpdateProducts({ id, closeModal }: { id: string, closeMo
                             </div>
                             {Array.from({ length: variants }).map((_, i) => (
                                 <div key={i} className="col-span-full grid lg:grid-cols-3 grid-cols-2 gap-x-4 rounded-xl border border-gray-500 p-2">
-                                    <div>
+                                    {/* <div>
                                         <Label>Color</Label>
                                         <Input type="text" name={`variants[${i}][color]`} placeholder="Enter color" defaultValue={data?.variants?.[i]?.color} />
                                     </div>
@@ -161,7 +161,7 @@ export default function UpdateProducts({ id, closeModal }: { id: string, closeMo
                                     <div>
                                         <Label>Réference</Label>
                                         <Input type="text" name={`variants[${i}][reference]`} placeholder="Enter Réference" defaultValue={data?.variants?.[i]?.reference} />
-                                    </div>
+                                    </div> */}
                                     <div>
                                         <Label>Price <span className='text-red-500'>*</span></Label>
                                         <Input type="text" name={`variants[${i}][price]`} placeholder="Enter price" defaultValue={data?.variants?.[i]?.price} />
