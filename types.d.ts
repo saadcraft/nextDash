@@ -13,10 +13,9 @@ type Products = {
 
 type Variants = {
     _id: string;
-    color: string;
-    resolution: string;
-    reference: string;
-    quntity: number;
+    sku: string;
+    options: string[];
+    quntity?: number;
     price: number;
 }
 

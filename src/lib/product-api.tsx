@@ -55,6 +55,24 @@ export async function getSingleProduct(id: string): Promise<Products | null> {
     }
 }
 
+export async function GetVarients(id: string): Promise<Variants[] | null> {
+    try {
+        const response = await apiRequest(`/products/variants/${id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        if (response.code == 200) {
+            return response.data
+        } else {
+            return null
+        }
+    } catch {
+        return null
+    }
+}
+
 export async function addProduct(Data: { [key: string]: unknown }): Promise<boolean> {
     const loadingToast = toast.loading("ajouter en cours ...", { position: "bottom-right", hideProgressBar: true })
     const form = new FormData;
@@ -185,13 +203,14 @@ export async function UpdateProduct(id: string, Data: { [key: string]: unknown }
 
 export async function UpdateVariants(id: string, Data: { [key: string]: unknown[] }) {
     const loadingToast = toast.loading("Miss a jour en cours ...", { position: "bottom-right", hideProgressBar: true })
+    // console.log(Data)
     try {
-        const payload = {
-            updates: Data, // ✅ wrap it under the 'updates' key
-        };
+        // const payload = {
+        //     updates: Data, // ✅ wrap it under the 'updates' key
+        // };
         const response = await apiRequest(`/products/variants/${id}`, {
             method: "PATCH",
-            body: JSON.stringify(payload),
+            body: JSON.stringify(Data),
             headers: {
                 'Content-Type': 'application/json',
             }

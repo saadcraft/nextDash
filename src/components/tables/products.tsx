@@ -11,7 +11,7 @@ import {
 import { useModal } from "@/hooks/useModal";
 import { Modal } from "../ui/modal";
 import AddProduct from "../windows/add-product";
-import { Pencil, Trash2 } from "lucide-react"
+import { Pencil, Trash2, DollarSign } from "lucide-react"
 // import { useRouter } from "next/navigation";
 
 // import Badge from "../ui/badge/Badge";
@@ -20,6 +20,7 @@ import DeleteReminder from "../windows/delete_reminder";
 import { UpdateProduct } from "@/lib/product-api";
 import { useRouter } from "next/navigation";
 import UpdateProducts from "@/components/windows/update-product"
+import VariantsUpdate from "../windows/update_variants";
 
 export default function ProductTable({ product }: { product: Products[] }) {
 
@@ -38,6 +39,7 @@ export default function ProductTable({ product }: { product: Products[] }) {
     })
 
     const [update, setUpdate] = useState<string | null>(null)
+    const [variants, setVariants] = useState<string | null>(null)
 
     const openDeleteConfirmation = (id: string, name: string) => {
         setDeleteConfirmation({
@@ -188,6 +190,13 @@ export default function ProductTable({ product }: { product: Products[] }) {
                                     <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
                                         <div className="flex justify-end gap-2">
                                             <button
+                                                onClick={() => { setVariants(order._id); openModal() }}
+                                                className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-transparent bg-yellow-600 p-1 text-sm font-medium text-white shadow-sm hover:bg-yellow-700 focus:outline-none focus:ring-yellow-500 focus:ring-offset-2"
+                                            >
+                                                <DollarSign className="h-4 w-4" />
+                                                {/* <span className="sr-only">Delete {product.name}</span> */}
+                                            </button>
+                                            <button
                                                 onClick={() => openUpdate(order._id)}
                                                 className="inline-flex h-8 w-8 items-center justify-center rounded-md p-1 text-sm font-medium text-white bg-brand-500 shadow-sm hover:bg-brand-600 focus:outline-none focus:ring-blue-500 focus:ring-offset-2"
                                             >
@@ -214,7 +223,10 @@ export default function ProductTable({ product }: { product: Products[] }) {
 
                     <UpdateProducts id={update} closeModal={closeModal} />
                     :
-                    <AddProduct closeModal={closeModal} />
+                    variants ?
+                        <VariantsUpdate id={variants} closeModal={closeModal} />
+                        :
+                        <AddProduct closeModal={closeModal} />
                 }
             </Modal>
             {deleteConfirmation.isOpen &&
