@@ -2,38 +2,49 @@ import React, { useEffect, useState } from 'react'
 import Button from '../ui/button/Button'
 import { Table, TableBody, TableCell, TableHeader, TableRow } from '../ui/table'
 import Input from '../form/input/InputField'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { GetVarients, UpdateVariants } from '@/lib/product-api'
 import { useRouter } from 'next/navigation'
 
 export default function VariantsUpdate({ id, closeModal }: { id: string, closeModal: () => void }) {
 
+    const queryClient = useQueryClient()
     const [quantity, setQauntity] = useState<boolean>(false)
-    const [data, setData] = useState<Variants[] | null>(null)
-    const [isLoading, setIsLoading] = useState<boolean>(true)
+    // const [data, setData] = useState<Variants[] | null>(null)
+    // const [isLoading, setIsLoading] = useState<boolean>(true)
+    const router = useRouter()
 
-    // const { isLoading, data } = useQuery({
-    //     queryKey: ['variant', id],
-    //     queryFn: () => GetVarients(id),
-    // })
+    const { isLoading, data } = useQuery({
+        queryKey: ['variant', id],
+        queryFn: () => GetVarients(id),
+    })
 
     useEffect(() => {
-        const fatchData = async () => {
-            const res = await GetVarients(id);
-            if (res) {
-                setData(res)
-                setIsLoading(false)
-            } else {
-                setData(null)
-                setIsLoading(false)
-            }
+        if (data) {
+            const hasQuantity = data.some((variant) => 'quantity' in variant || 'quntity' in variant);
+            setQauntity(hasQuantity);
         }
+    }, [data]);
 
-        fatchData();
+    const updateMutation = useMutation({
+        mutationFn: (variants: Variants[]) => UpdateVariants(id, { updates: variants, removeAttribut: !quantity }),
+        onSuccess: (updatedData: Variants[]) => {
+            // Option 1: Refetch
+            // queryClient.invalidateQueries(['variant', id]);
 
-    }, [])
+            // Option 2: Directly update cache
+            queryClient.setQueryData(['variant', id], (old: Variants[]) => {
+                return old.map((variant: Variants) => {
+                    const updated = updatedData.find((v: Variants) => v._id === variant._id)
+                    return updated || variant
+                })
+            })
 
-    const router = useRouter()
+            closeModal()
+            router.refresh()
+        },
+    })
+
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -62,12 +73,7 @@ export default function VariantsUpdate({ id, closeModal }: { id: string, closeMo
         // const transformedData = Object.fromEntries(
         //     Object.entries(filteredData).map(([key, value]) => [key, Array.isArray(value) ? value : [value]])
         // );
-        const update = await UpdateVariants(id, { updates: variants })
-
-        if (update) {
-            closeModal()
-            router.refresh()
-        }
+        updateMutation.mutate(variants)
     }
 
 
@@ -116,7 +122,14 @@ export default function VariantsUpdate({ id, closeModal }: { id: string, closeMo
                                         isHeader
                                         className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
                                     >
-                                        Quntity
+                                        <div className='flex gap-1 items-center justify-end'>
+                                            Quntity
+                                            {quantity ?
+                                                <span onClick={() => setQauntity(false)} className='font-bold text-red-500 border px-1.5 border-red-500 rounded-full cursor-pointer'>-</span>
+                                                :
+                                                <span onClick={() => setQauntity(true)} className='font-bold text-green-500 border px-1.5 border-green-500 rounded-full cursor-pointer'>+</span>
+                                            }
+                                        </div>
                                     </TableCell>
                                 </TableRow>
                             </TableHeader>
@@ -149,7 +162,7 @@ export default function VariantsUpdate({ id, closeModal }: { id: string, closeMo
                                         <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
                                             <div className="flex justify-end gap-2">
                                                 {quantity &&
-                                                    <Input type="text" name="quntity" placeholder="enter Quantity" defaultValue={order?.quntity} />
+                                                    <Input type="text" name={`quntity[${index}]`} placeholder="enter Quantity" defaultValue={order?.quntity} />
                                                 }
                                             </div>
                                         </TableCell>
@@ -163,7 +176,7 @@ export default function VariantsUpdate({ id, closeModal }: { id: string, closeMo
                             Close
                         </Button>
                         <Button size="sm">
-                            Modify
+                            {updateMutation.isPending ? 'Saving...' : 'Modify'}
                         </Button>
                     </div>
                 </form>

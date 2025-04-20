@@ -201,7 +201,7 @@ export async function UpdateProduct(id: string, Data: { [key: string]: unknown }
     }
 }
 
-export async function UpdateVariants(id: string, Data: { [key: string]: unknown[] }) {
+export async function UpdateVariants(id: string, Data: { [key: string]: unknown[] | unknown }) {
     const loadingToast = toast.loading("Miss a jour en cours ...", { position: "bottom-right", hideProgressBar: true })
     // console.log(Data)
     try {
@@ -222,7 +222,7 @@ export async function UpdateVariants(id: string, Data: { [key: string]: unknown[
                 isLoading: false,
                 autoClose: 3000,
             })
-            return true
+            return response.data
         } else {
             toast.update(loadingToast, {
                 render: (

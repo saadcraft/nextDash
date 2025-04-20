@@ -38,6 +38,7 @@ export default function ProductTable({ product }: { product: Products[] }) {
         productName: "",
     })
 
+    const [addProduct, setAddProduct] = useState<boolean>(false)
     const [update, setUpdate] = useState<string | null>(null)
     const [variants, setVariants] = useState<string | null>(null)
 
@@ -61,6 +62,13 @@ export default function ProductTable({ product }: { product: Products[] }) {
         openModal();
     }
 
+    const closeAll = () => {
+        closeModal();
+        setUpdate(null);
+        setVariants(null);
+        setAddProduct(false);
+    }
+
     // console.log(product)
     // console.log(update)
 
@@ -77,11 +85,17 @@ export default function ProductTable({ product }: { product: Products[] }) {
     //     console.log(`Modify product with id: ${id}`)
     // }
 
+    const modalContentKey = update
+        ? `update-${update}`
+        : variants
+            ? `variant-${variants}`
+            : 'add';
+
 
     return (
         <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
             <button
-                onClick={openModal}
+                onClick={() => { setAddProduct(true); openModal(); }}
                 type="button"
                 className="absolute right-4 top-3.5 flex justify-center rounded-lg bg-brand-500 px-4 py-2.5 text-sm font-medium text-white hover:bg-brand-600 w-auto"
             >
@@ -218,16 +232,12 @@ export default function ProductTable({ product }: { product: Products[] }) {
                     </Table>
                 </div>
             </div>
-            <Modal isOpen={isOpen} onClose={closeModal} className="max-w-[700px] mt-20 lg:mt-0 m-4">
-                {update ?
-
-                    <UpdateProducts id={update} closeModal={closeModal} />
-                    :
-                    variants ?
-                        <VariantsUpdate id={variants} closeModal={closeModal} />
-                        :
-                        <AddProduct closeModal={closeModal} />
-                }
+            <Modal
+                isOpen={isOpen} onClose={closeAll}
+                className="max-w-[700px] mt-20 lg:mt-0 m-4">
+                {update && <UpdateProducts id={update} closeModal={closeModal} />}
+                {variants && <VariantsUpdate id={variants} closeModal={closeModal} />}
+                {addProduct && <AddProduct closeModal={closeAll} />}
             </Modal>
             {deleteConfirmation.isOpen &&
                 <DeleteReminder closeDelet={closeDeleteConfirmation} handleDelete={handleDelete} deleteConfirmation={deleteConfirmation} />
