@@ -140,7 +140,7 @@ export default function VariantsUpdate({ id, closeModal }: { id: string, closeMo
                                     <TableRow key={order._id}>
                                         <TableCell className="px-5 py-4 sm:px-6 text-start">
                                             <div className="flex items-center gap-3">
-                                                <div className="w-11 h-11 text-warning-25 overflow-hidden rounded-md">
+                                                <div className="w-11 h-11 dark:text-warning-25 overflow-hidden rounded-md">
                                                     {index + 1}
                                                 </div>
                                             </div>

@@ -235,8 +235,8 @@ export default function ProductTable({ product }: { product: Products[] }) {
             <Modal
                 isOpen={isOpen} onClose={closeAll}
                 className="max-w-[700px] mt-20 lg:mt-0 m-4">
-                {update && <UpdateProducts id={update} closeModal={closeModal} />}
-                {variants && <VariantsUpdate id={variants} closeModal={closeModal} />}
+                {update && <UpdateProducts id={update} closeModal={closeAll} />}
+                {variants && <VariantsUpdate id={variants} closeModal={closeAll} />}
                 {addProduct && <AddProduct closeModal={closeAll} />}
             </Modal>
             {deleteConfirmation.isOpen &&

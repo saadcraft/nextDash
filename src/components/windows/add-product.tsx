@@ -13,13 +13,22 @@ import { toast } from 'react-toastify'
 import { useRouter } from 'next/navigation'
 import { addProduct } from '@/lib/product-api'
 
+
+type Variant = {
+    key: string;
+    values: number;
+};
+
 export default function AddProduct({ closeModal }: { closeModal: () => void }) {
 
     const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
 
-    const [variants, setVariats] = useState<number>(1)
-
-
+    const [variants, setVariats] = useState<Variant[]>([
+        {
+            key: "",
+            values: 1
+        },
+    ])
 
     const router = useRouter()
 
@@ -49,6 +58,31 @@ export default function AddProduct({ closeModal }: { closeModal: () => void }) {
             "image/svg+xml": [],
         },
     });
+
+    const addValue = (variantIndex: number) => {
+        setVariats((prev) => {
+            const updated = [...prev];
+            updated[variantIndex] = {
+                ...updated[variantIndex],
+                values: updated[variantIndex].values + 1,
+            };
+            return updated;
+        });
+    };
+
+    const removeValue = (variantIndex: number) => {
+        setVariats((prev) => {
+            const updated = [...prev];
+            const current = updated[variantIndex];
+            if (current.values > 1) {
+                updated[variantIndex] = {
+                    ...current,
+                    values: current.values - 1,
+                };
+            }
+            return updated;
+        });
+    };
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -130,53 +164,74 @@ export default function AddProduct({ closeModal }: { closeModal: () => void }) {
                                 </span>
                             </div>
                         </div>
-                        {Array.from({ length: variants }).map((_, i) => (
-                            <div key={i} className="col-span-full grid lg:grid-cols-3 grid-cols-2 gap-x-4 rounded-xl border border-gray-500 p-2">
-                                <div>
-                                    <Label>Color</Label>
-                                    <Input type="text" name={`variants[${i}][color]`} placeholder="Enter color" />
+                        {variants.map((pre, i) => (
+                            <div key={i} className="relative col-span-full grid lg:grid-cols-3 grid-cols-2 gap-x-4 rounded-xl border border-gray-500 p-2">
+                                {i + 1 == variants.length &&
+                                    <div className='absolute top-1 right-2 flex gap-2'>
+                                        <span
+                                            onClick={() => setVariats((prev) => [...prev, { key: "", values: 1 }])}
+                                            className='font-bold text-green-500 border px-2 border-green-500 rounded-full cursor-pointer'>
+                                            +
+                                        </span>
+                                        {variants.length > 1 &&
+                                            <span
+                                                onClick={() => setVariats((prev) => prev.filter((_, index) => index !== i))}
+                                                className='font-bold text-red-500 border px-2 border-red-500 rounded-full cursor-pointer'>
+                                                x
+                                            </span>
+                                        }
+                                    </div>
+                                }
+                                <div className='col-span-full'>
+                                    <Label>???</Label>
+                                    <Input type="text" placeholder="Enter Options name" onChange={(event) => {
+                                        const updatedVariants = [...variants];
+                                        updatedVariants[i].key = event.target.value;
+                                        setVariats(updatedVariants);
+                                    }} defaultValue={pre.key} />
                                 </div>
-                                <div>
-                                    <Label>Résolution</Label>
-                                    <Input type="text" name={`variants[${i}][resolution]`} placeholder="Enter Résolution" />
-                                </div>
-                                <div>
-                                    <Label>Réference</Label>
-                                    <Input type="text" name={`variants[${i}][reference]`} placeholder="Enter Réference" />
-                                </div>
-                                <div>
-                                    <Label>Price <span className='text-red-500'>*</span></Label>
-                                    <Input type="text" name={`variants[${i}][price]`} placeholder="Enter price" />
-                                </div>
-                                <div>
-                                    <Label>Quantity</Label>
-                                    <Input type="text" name={`variants[${i}][quantity]`} placeholder="Enter quantity" />
-                                </div>
-                                {i + 1 == variants &&
-                                    <div className='flex gap-3'>
-                                        <div className='mt-9'>
-
-                                            <span onClick={() => setVariats(i + 2)} className='w-full border px-4 py-2 rounded-xl cursor-pointer text-brand-500 font-bold border-brand-500 hover:bg-brand-500 hover:text-white transition-all'>+</span>
+                                {Array.from({ length: pre.values }).map((val, index) => (
+                                    <div key={index}>
+                                        <div>
+                                            <Label>options</Label>
+                                            <Input type="text" name={`attributes[${pre.key}][${index}]`} placeholder="Enter option" />
                                         </div>
-                                        {variants > 1 &&
-
-                                            <div className='mt-9'>
-
-                                                <span onClick={() => setVariats(i)} className='w-full border px-4 py-2 rounded-xl cursor-pointer text-red-500 font-bold border-red-500 hover:bg-red-500 hover:text-white transition-all'>x</span>
+                                        {index + 1 == pre.values &&
+                                            <div className='mt-2 flex gap-1'>
+                                                <span
+                                                    onClick={() => addValue(i)}
+                                                    className='font-bold text-green-500 border px-2 border-green-500 rounded-full cursor-pointer'>
+                                                    +
+                                                </span>
+                                                {pre.values > 1 &&
+                                                    <span
+                                                        onClick={() => removeValue(i)}
+                                                        className='font-bold text-red-500 border px-2 border-red-500 rounded-full cursor-pointer'>
+                                                        x
+                                                    </span>
+                                                }
                                             </div>
                                         }
                                     </div>
+                                ))
+
                                 }
                             </div>
                         ))}
 
                         <div>
-                            <Label>Description <span className='text-red-500'>*</span></Label>
-                            <TextArea
-                                name='description'
-                                placeholder='Entre description'
-                                rows={5}
-                            />
+                            <div>
+                                <Label>Default Price<span className='text-red-500'>*</span></Label>
+                                <Input type="text" name="lowPrice" placeholder="enter default price" />
+                            </div>
+                            <div>
+                                <Label>Description <span className='text-red-500'>*</span></Label>
+                                <TextArea
+                                    name='description'
+                                    placeholder='Entre description'
+                                    rows={5}
+                                />
+                            </div>
                         </div>
                         <div>
                             <Label>Products images <span className='text-red-500'>*</span></Label>
