@@ -183,7 +183,7 @@ export default function AddProduct({ closeModal }: { closeModal: () => void }) {
                                     </div>
                                 }
                                 <div className='col-span-full'>
-                                    <Label>???</Label>
+                                    <Label>Variant</Label>
                                     <Input type="text" placeholder="Enter Options name" onChange={(event) => {
                                         const updatedVariants = [...variants];
                                         updatedVariants[i].key = event.target.value;

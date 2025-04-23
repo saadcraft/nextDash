@@ -23,23 +23,23 @@ export default function UpdateProducts({ id, closeModal }: { id: string, closeMo
     // console.log("here data : ", data);
 
     const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
-    const [variants, setVariats] = useState<number>(1)
+    // const [variants, setVariats] = useState<number>(1)
     const [removePic, setRemovePic] = useState<string[]>([])
-    const [removeVar, setRemoveVar] = useState<string[]>([])
+    // const [removeVar, setRemoveVar] = useState<string[]>([])
     const [selected, setSelected] = useState<string | null>(null);
 
-    const handleRemoveVar = (num: number, id?: string | null) => {
-        if (id) {
-            setRemoveVar(pre => [id, ...pre]);
-        }
-        setVariats(num)
-    }
+    // const handleRemoveVar = (num: number, id?: string | null) => {
+    //     if (id) {
+    //         setRemoveVar(pre => [id, ...pre]);
+    //     }
+    //     setVariats(num)
+    // }
 
-    useEffect(() => {
-        if (data?.variants?.length) {
-            setVariats(data.variants.length);
-        }
-    }, [data]);
+    // useEffect(() => {
+    //     if (data?.variants?.length) {
+    //         setVariats(data.variants.length);
+    //     }
+    // }, [data]);
 
     const router = useRouter()
 
@@ -87,11 +87,11 @@ export default function UpdateProducts({ id, closeModal }: { id: string, closeMo
             })
         }
 
-        if (removeVar.length > 0) {
-            removeVar.map((pre, index) => {
-                formData.append(`removeVariant[${index}]`, pre)
-            })
-        }
+        // if (removeVar.length > 0) {
+        //     removeVar.map((pre, index) => {
+        //         formData.append(`removeVariant[${index}]`, pre)
+        //     })
+        // }
 
         const formObject = Object.fromEntries(formData.entries())
 
@@ -148,20 +148,8 @@ export default function UpdateProducts({ id, closeModal }: { id: string, closeMo
                                     </span>
                                 </div>
                             </div>
-                            {Array.from({ length: variants }).map((_, i) => (
+                            {/* {Array.from({ length: variants }).map((_, i) => (
                                 <div key={i} className="col-span-full grid lg:grid-cols-3 grid-cols-2 gap-x-4 rounded-xl border border-gray-500 p-2">
-                                    {/* <div>
-                                        <Label>Color</Label>
-                                        <Input type="text" name={`variants[${i}][color]`} placeholder="Enter color" defaultValue={data?.variants?.[i]?.color} />
-                                    </div>
-                                    <div>
-                                        <Label>Résolution</Label>
-                                        <Input type="text" name={`variants[${i}][resolution]`} placeholder="Enter Résolution" defaultValue={data?.variants?.[i]?.resolution} />
-                                    </div>
-                                    <div>
-                                        <Label>Réference</Label>
-                                        <Input type="text" name={`variants[${i}][reference]`} placeholder="Enter Réference" defaultValue={data?.variants?.[i]?.reference} />
-                                    </div> */}
                                     <div>
                                         <Label>Price <span className='text-red-500'>*</span></Label>
                                         <Input type="text" name={`variants[${i}][price]`} placeholder="Enter price" defaultValue={data?.variants?.[i]?.price} />
@@ -191,7 +179,7 @@ export default function UpdateProducts({ id, closeModal }: { id: string, closeMo
                                         </div>
                                     }
                                 </div>
-                            ))}
+                            ))} */}
 
                             <div>
                                 <Label>Description <span className='text-red-500'>*</span></Label>
