@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Label from '../form/Label';
 import Input from '../form/input/InputField';
 import Select from '../form/Select';

@@ -50,8 +50,7 @@ export default function VariantsUpdate({ id, closeModal }: { id: string, closeMo
         event.preventDefault();
 
         const formData = new FormData(event.currentTarget);
-
-        const variantMap = new Map<number, any>();
+        const variantMap = new Map<number, Variants>();
 
         for (const [key, value] of formData.entries()) {
             const match = key.match(/^(\w+)\[(\d+)\]$/);
@@ -61,19 +60,15 @@ export default function VariantsUpdate({ id, closeModal }: { id: string, closeMo
             const index = Number(indexStr);
 
             if (!variantMap.has(index)) {
-                variantMap.set(index, {});
+                variantMap.set(index, {} as Variants);
             }
 
-            const entry = variantMap.get(index);
-            entry[field] = field === 'price' || field === 'quantity' ? Number(value) : value;
+            const entry = variantMap.get(index)!;
+            entry[field] = field === 'price' || field === 'quntity' ? Number(value) : value.toString();
         }
 
-        const variants = Array.from(variantMap.values());
-
-        // const transformedData = Object.fromEntries(
-        //     Object.entries(filteredData).map(([key, value]) => [key, Array.isArray(value) ? value : [value]])
-        // );
-        updateMutation.mutate(variants)
+        const updates = Array.from(variantMap.values());
+        updateMutation.mutate(updates)
     }
 
 
@@ -155,11 +150,11 @@ export default function VariantsUpdate({ id, closeModal }: { id: string, closeMo
                                                 </span>
                                             </div>
                                         </TableCell>
-                                        <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                                        <TableCell className="px-4 py-3 text-gray-500 min-w-32 text-start text-theme-sm dark:text-gray-400">
                                             <Input type="text" name={`price[${index}]`} placeholder="enter price" defaultValue={order.price} />
                                             <input readOnly type='text' name={`id[${index}]`} className='hidden' value={order._id} />
                                         </TableCell>
-                                        <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
+                                        <TableCell className="px-4 py-3 text-gray-500 min-w-32 text-theme-sm dark:text-gray-400">
                                             <div className="flex justify-end gap-2">
                                                 {quantity &&
                                                     <Input type="text" name={`quntity[${index}]`} placeholder="enter Quantity" defaultValue={order?.quntity} />

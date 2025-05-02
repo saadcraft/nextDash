@@ -17,6 +17,7 @@ type Variants = {
     options: string[];
     quntity?: number;
     price: number;
+    [key: string]: string | number | undefined;
 }
 
 type UserAuth = {

@@ -85,11 +85,11 @@ export default function ProductTable({ product }: { product: Products[] }) {
     //     console.log(`Modify product with id: ${id}`)
     // }
 
-    const modalContentKey = update
-        ? `update-${update}`
-        : variants
-            ? `variant-${variants}`
-            : 'add';
+    // const modalContentKey = update
+    //     ? `update-${update}`
+    //     : variants
+    //         ? `variant-${variants}`
+    //         : 'add';
 
 
     return (

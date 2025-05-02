@@ -55,5 +55,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-    matcher: ['/((?!api|_next|fonts|icons|images|login).*)'],
+    matcher: ['/((?!api|_next|fonts|icons|images|login|.*\\.png$|.*\\.jpg$|.*\\.svg$|.*\\.webp$|.*\\jpeg$|.*\\woff2$|.*\\.css$|.*\\.js$).*)', '/'],
 };
