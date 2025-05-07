@@ -12,9 +12,10 @@ const nextConfig: NextConfig = {
   env: {
     SERVER_DOMAIN: process.env.SERVER_DOMAIN,
     AUTH_SECRET: process.env.AUTH_SECRET,
+    IMGS_DOMAIN: process.env.IMGS_DOMAIN,
   },
   images: {
-    domains: ['localhost', 'localhost:8000'],
+    domains: ['localhost', 'localhost:8000', '192.168.1.5'],
   },
   webpack(config) {
     config.module.rules.push({

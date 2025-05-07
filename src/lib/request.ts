@@ -1,5 +1,6 @@
 "use server"
 
+import { redirect } from "next/navigation";
 import refreshAccessToken from "./cookies";
 import { clearSession, getSession, saveSession } from "./session";
 import { SessionData } from "./sessionOptions";
@@ -7,6 +8,8 @@ import { SessionData } from "./sessionOptions";
 export default async function apiRequest(url: string, options: { method?: string; headers?: HeadersInit; body?: BodyInit | null } = {}) {
     // console.log("apiRequest started for:", url);
     const session = await getSession();
+
+    let refresh: boolean = false
 
     const headers = {
         // 'Content-Type': 'application/json',
@@ -25,6 +28,7 @@ export default async function apiRequest(url: string, options: { method?: string
         if (response.status === 401) {
             console.log("Access token expired. Attempting to refresh...");
             if (!session?.user?.refresh_token) {
+                // console.log("khra")
                 return {
                     code: 401,
                     message: 'You lose your access'
@@ -40,6 +44,7 @@ export default async function apiRequest(url: string, options: { method?: string
                     message: 'You lose your access',
                 };
             }
+
             const sessionData: SessionData = {
                 user: {
                     ...session.user,
@@ -48,7 +53,9 @@ export default async function apiRequest(url: string, options: { method?: string
                 }
             }
 
+            console.log(sessionData)
 
+            refresh = true;
             // ✅ Update session properly using NextAuth’s callbacks
 
             await saveSession(sessionData);
@@ -73,14 +80,16 @@ export default async function apiRequest(url: string, options: { method?: string
 
         return {
             code: response.status,
-            data: data
+            data: data,
+            refresh: refresh
         }
     } catch {
         // Handle network errors, JSON parsing errors, etc.
         // console.error('API request failed:', error);
         return {
             code: 500,
-            message: 'An unknown error occurred'
+            message: 'An unknown error occurred',
+            refresh: refresh
         };
     }
 }

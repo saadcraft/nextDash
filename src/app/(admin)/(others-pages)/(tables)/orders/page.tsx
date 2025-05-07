@@ -1,8 +1,10 @@
 import ComponentCard from "@/components/common/ComponentCard";
 import PageBreadcrumb from "@/components/common/PageBreadCrumb";
-import BasicTableOne from "@/components/tables/BasicTableOne";
+import BasicTableOne from "@/components/tables/tableOrders";
+import { getAllOrders } from "@/lib/orders-api";
 // import Pagination from "@/components/tables/Pagination";
 import { Metadata } from "next";
+import { notFound, redirect } from "next/navigation";
 import React from "react";
 
 export const metadata: Metadata = {
@@ -12,13 +14,30 @@ export const metadata: Metadata = {
   // other metadata
 };
 
-export default function BasicTables() {
+type props = {
+  searchParams: Promise<{ page?: string, number?: string, user?: string }>;
+}
+
+
+export default async function BasicTables({ searchParams }: props) {
+
+  const { page, number, user } = await searchParams;
+  const pageNumber = page || "1";
+  const trackingNum = number || "";
+  const searchUser = user || "";
+
+  const orders = await getAllOrders({ page: pageNumber, number: trackingNum, user: searchUser })
+
+  if (!orders) notFound();
+
+  const { result } = orders;
+
   return (
     <div>
       <PageBreadcrumb pageTitle="Basic Table" />
       <div className="space-y-6">
         <ComponentCard title="Basic Table 1">
-          <BasicTableOne />
+          <BasicTableOne orders={result} />
           {/* <Pagination  /> */}
         </ComponentCard>
       </div>
