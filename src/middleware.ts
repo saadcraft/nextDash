@@ -15,6 +15,8 @@ export async function middleware(req: NextRequest) {
 
     const response = NextResponse.next();
 
+    const access = req.cookies.get("refresh_token")?.value;
+
     try {
         // Get the session using iron-session
         const session = await getIronSession<SessionData>(
@@ -38,10 +40,10 @@ export async function middleware(req: NextRequest) {
         //     }
         // }
 
-        if (isProtectedRoute && !session.user) {
+        if (isProtectedRoute && !access) {
             return NextResponse.redirect(new URL("/signin", req.url)); // Redirect to login if not authenticated
         } else {
-            if (isPublicRoute && session.user) {
+            if (isPublicRoute && access) {
                 return NextResponse.redirect(new URL("/", req.url));
             }
         }

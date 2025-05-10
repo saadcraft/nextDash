@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -16,6 +16,7 @@ import { Info } from "lucide-react"
 import { Modal } from "../ui/modal";
 import { useModal } from "@/hooks/useModal";
 import OrderInfo from "../windows/order_info";
+import { getAllOrders } from "@/lib/orders-api";
 
 const StatusBadge = ({ status }: { status: string }) => {
   let bgColor = ""
@@ -70,6 +71,24 @@ export default function BasicTableOne({ orders }: { orders: OrderInfo[] }) {
 
   const { isOpen, openModal, closeModal } = useModal();
   const [info, setInfo] = useState<OrderInfo | null>(null)
+  const [order, setOrder] = useState<OrderInfo[] | null>(null)
+
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+        const data = await getAllOrders({ page: "1", number: "", user: "" })
+
+        if (data) {
+          setOrder(data.result)
+        }
+      } catch {
+        setOrder(null)
+      }
+    }
+    fetch()
+  }, [])
+
+  console.log(order)
 
   const closeAll = () => {
     closeModal();
@@ -126,7 +145,7 @@ export default function BasicTableOne({ orders }: { orders: OrderInfo[] }) {
 
             {/* Table Body */}
             <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
-              {orders.map((order) => (
+              {order?.map((order) => (
                 <TableRow key={order._id}>
                   <TableCell className="px-5 py-4 sm:px-6 text-start">
                     <div className="flex items-center gap-3">

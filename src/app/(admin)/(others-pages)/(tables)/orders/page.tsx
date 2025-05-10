@@ -4,7 +4,7 @@ import BasicTableOne from "@/components/tables/tableOrders";
 import { getAllOrders } from "@/lib/orders-api";
 // import Pagination from "@/components/tables/Pagination";
 import { Metadata } from "next";
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import React from "react";
 
 export const metadata: Metadata = {
@@ -28,16 +28,18 @@ export default async function BasicTables({ searchParams }: props) {
 
   const orders = await getAllOrders({ page: pageNumber, number: trackingNum, user: searchUser })
 
-  if (!orders) notFound();
+  let result;
 
-  const { result } = orders;
+  if (orders) {
+    result = orders.result;
+  }
 
   return (
     <div>
       <PageBreadcrumb pageTitle="Basic Table" />
       <div className="space-y-6">
         <ComponentCard title="Basic Table 1">
-          <BasicTableOne orders={result} />
+          <BasicTableOne orders={result!} />
           {/* <Pagination  /> */}
         </ComponentCard>
       </div>

@@ -97,9 +97,17 @@ const othersItems: NavItem[] = [
   },
 ];
 
+
+
 const AppSidebar: React.FC = () => {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
   const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
   const pathname = usePathname();
+
 
   const renderMenuItems = (
     navItems: NavItem[],
@@ -301,7 +309,7 @@ const AppSidebar: React.FC = () => {
           }`}
       >
         <Link href="/">
-          {isExpanded || isHovered || isMobileOpen ? (
+          {isClient && (isExpanded || isHovered || isMobileOpen) ? (
             <div className="flex items-center">
               <Image
                 className="dark:hidden"
