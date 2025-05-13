@@ -1,8 +1,9 @@
 "use client"
 import { GetFullOrder } from '@/lib/orders-api';
 import { FormatDate } from '@/lib/tools/tool';
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { LoaderCircle } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
 
 export default function OrderInfo({ stat, colie, onClose }: {
     stat: ({ status }: {
@@ -11,23 +12,30 @@ export default function OrderInfo({ stat, colie, onClose }: {
     colie: OrderInfo,
     onClose: () => void
 }) {
-    const [isLoading, setIsLoading] = useState<boolean>(true)
+    // const [isLoading, setIsLoading] = useState<boolean>(true)
     const [orderInfo, setOrderInfo] = useState<OrderInfo | null>(null)
 
-    useEffect(() => {
-        const fatchAllOrder = async () => {
-            const fetch = await GetFullOrder(colie._id)
-            if (fetch) {
-                setOrderInfo(fetch)
-                setIsLoading(false)
-            } else {
-                setIsLoading(false)
-            }
-        }
-        fatchAllOrder();
-    }, [])
+    const { isLoading, data } = useQuery({
+        queryKey: ['orders' + colie._id],
+        queryFn: () => GetFullOrder(colie._id),
+    })
 
-    console.log(colie)
+    console.log(data)
+
+    // useEffect(() => {
+    //     const fatchAllOrder = async () => {
+    //         const fetch = await GetFullOrder(colie._id)
+    //         if (fetch) {
+    //             setOrderInfo(fetch)
+    //             setIsLoading(false)
+    //         } else {
+    //             setIsLoading(false)
+    //         }
+    //     }
+    //     fatchAllOrder();
+    // }, [])
+
+    // console.log(colie)
 
     const sum = colie.orders.reduce((total, order) => total + (order.price) * order.quantity, 0)
 
@@ -35,11 +43,11 @@ export default function OrderInfo({ stat, colie, onClose }: {
     return (
 
 
-        <div className="bg-gray-900 rounded-lg shadow-xl w-full max-w-2xl mx-4 relative overflow-hidden">
+        <div className="dark:bg-gray-900  rounded-lg shadow-xl w-full max-w-2xl mx-4 relative overflow-hidden">
 
             <div className="px-6 py-4 border-b border-gray-700">
-                <h3 className="text-xl font-semibold text-white">Order Details</h3>
-                <p className="text-gray-400 text-sm">Order #{colie._id}</p>
+                <h3 className="text-xl font-semibold dark:text-white">Order Details</h3>
+                <p className="dark:text-gray-400 text-sm">Order #{colie._id}</p>
             </div>
 
             <div className="max-h-[70vh] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-900 scrollbar-track-gray-500">
@@ -52,20 +60,20 @@ export default function OrderInfo({ stat, colie, onClose }: {
                             </div> */}
 
                         <div className="w-full md:w-2/3">
-                            <h4 className="text-lg font-medium flex gap-3 text-white mb-2">Tracking : {colie.tracking ||
+                            <h4 className="text-lg font-medium flex gap-3 dark:text-white mb-2">Tracking : {colie.tracking ||
                                 <span className='flex items-center'><LoaderCircle className="animate-spin text-2xl" /> En attendant ...</span>}</h4>
                             <div className="space-y-4">
                                 <div>
-                                    <p className="text-gray-400 text-sm">Date</p>
-                                    <p className="text-gray-200">{FormatDate(colie.updatedAt)}</p>
+                                    <p className="dark:text-gray-400 text-sm">Date</p>
+                                    <p className="dark:text-gray-200">{FormatDate(colie.updatedAt)}</p>
                                 </div>
                                 <div>
-                                    <p className="text-gray-400 text-sm">Status</p>
+                                    <p className="dark:text-gray-400 text-sm">Status</p>
                                     {stat({ status: colie.status })}
                                 </div>
                                 <div>
-                                    <p className="text-gray-400 text-sm">Adresse de livraison</p>
-                                    <p className="text-gray-200">{colie.adresse}</p>
+                                    <p className="dark:text-gray-400 text-sm">Adresse de livraison</p>
+                                    <p className="dark:text-gray-200">{colie.adresse}</p>
                                 </div>
                                 {/* <div>
                                         <p className="text-gray-400 text-sm">Payment Method</p>
@@ -77,29 +85,29 @@ export default function OrderInfo({ stat, colie, onClose }: {
                 </div>
 
                 <div className="p-6 relative">
-                    <h4 className="text-lg font-medium text-white mb-4">Order Items</h4>
+                    <h4 className="text-lg font-medium dark:text-white mb-4">Order Items</h4>
                     {isLoading ?
 
-                        <div className={`absolute top-0 left-0 right-0 bottom-0 bg-forth text-white bg-opacity-50 text-xl flex justify-center items-center gap-3`}>
+                        <div className={`absolute top-0 left-0 right-0 bottom-0 bg-forth dark:text-white bg-opacity-50 text-xl flex justify-center items-center gap-3`}>
                             <LoaderCircle className="animate-spin text-2xl" /> Loading ...
                         </div>
 
                         :
 
-                        orderInfo ?
+                        data ?
 
-                            orderInfo.orders.map((pre, index) => (
+                            data.orders.map((pre, index) => (
 
                                 <div key={index} className="flex items-start space-x-4 py-4 border-b border-gray-700">
                                     <div className="h-20 w-20 flex-shrink-0 bg-gray-800 rounded overflow-hidden">
                                         <img src={process.env.IMGS_DOMAIN + pre.variant.product.primaryImage} alt="Product 1" className="w-full h-full object-cover" />
                                     </div>
                                     <div className="flex-1 min-w-0">
-                                        <p className="text-white font-medium">{pre.variant.product.title}</p>
-                                        <p className="text-gray-400 mt-1">{pre.variant.sku}</p>
+                                        <p className="dark:text-white font-medium">{pre.variant.product.title}</p>
+                                        <p className="dark:text-gray-400 mt-1">{pre.variant.sku}</p>
                                         <div className="flex justify-between mt-2">
-                                            <p className="text-gray-400">Qty: {pre.quantity}</p>
-                                            <p className="text-white font-medium">{pre.price} DA</p>
+                                            <p className="dark:text-gray-400">Qty: {pre.quantity}</p>
+                                            <p className="dark:text-white font-medium">{pre.price} DA</p>
                                         </div>
                                     </div>
                                 </div>
@@ -111,20 +119,20 @@ export default function OrderInfo({ stat, colie, onClose }: {
 
                     <div className="mt-6 space-y-2">
                         <div className="flex justify-between">
-                            <p className="text-gray-400">Total Articles</p>
-                            <p className="text-gray-200">{sum} DA</p>
+                            <p className="dark:text-gray-400">Total Articles</p>
+                            <p className="dark:text-gray-200">{sum} DA</p>
                         </div>
                         <div className="flex justify-between">
-                            <p className="text-gray-400">Prix de livraison</p>
-                            <p className="text-gray-200">0 DA</p>
+                            <p className="dark:text-gray-400">Prix de livraison</p>
+                            <p className="dark:text-gray-200">0 DA</p>
                         </div>
                         {/* <div className="flex justify-between">
                                 <p className="text-gray-400">Tax</p>
                                 <p className="text-gray-200">$35.20</p>
                             </div> */}
                         <div className="flex justify-between pt-4 border-t border-gray-700">
-                            <p className="text-white font-medium">Total</p>
-                            <p className="text-white font-bold">{sum} DA</p>
+                            <p className="dark:text-white font-medium">Total</p>
+                            <p className="dark:text-white font-bold">{sum} DA</p>
                         </div>
                     </div>
                 </div>

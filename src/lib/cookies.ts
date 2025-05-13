@@ -1,7 +1,7 @@
 "use client"
 // import { useRouter } from "next/navigation";
 import { Logout } from "./auth";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 
 export default async function refreshAccessToken() {
     // const { update } = useSession()
@@ -14,7 +14,7 @@ export default async function refreshAccessToken() {
             credentials: "include"
         });
 
-        console.log("here")
+        // console.log("here")
 
         if (!refreshed.ok) {
 

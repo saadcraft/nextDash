@@ -2,8 +2,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 // import { getToken } from 'next-auth/jwt';
-import { getIronSession } from 'iron-session';
-import { SessionData, sessionOptions } from './lib/sessionOptions';
+// import { getIronSession } from 'iron-session';
+// import { SessionData, sessionOptions } from './lib/sessionOptions';
 // import refreshAccessToken from './lib/cookies';
 // import { cookies } from 'next/headers';
 
@@ -19,11 +19,11 @@ export async function middleware(req: NextRequest) {
 
     try {
         // Get the session using iron-session
-        const session = await getIronSession<SessionData>(
-            req as unknown as Request,
-            response as unknown as Response,
-            sessionOptions
-        );
+        // const session = await getIronSession<SessionData>(
+        //     req as unknown as Request,
+        //     response as unknown as Response,
+        //     sessionOptions
+        // );
 
 
 

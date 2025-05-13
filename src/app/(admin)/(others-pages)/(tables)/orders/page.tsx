@@ -8,7 +8,7 @@ import { notFound } from "next/navigation";
 import React from "react";
 
 export const metadata: Metadata = {
-  title: "Next.js Basic Table | TailAdmin - Next.js Dashboard Template",
+  title: "Orders",
   description:
     "This is Next.js Basic Table  page for TailAdmin  Tailwind CSS Admin Dashboard Template",
   // other metadata
@@ -26,20 +26,13 @@ export default async function BasicTables({ searchParams }: props) {
   const trackingNum = number || "";
   const searchUser = user || "";
 
-  const orders = await getAllOrders({ page: pageNumber, number: trackingNum, user: searchUser })
-
-  let result;
-
-  if (orders) {
-    result = orders.result;
-  }
 
   return (
     <div>
       <PageBreadcrumb pageTitle="Basic Table" />
       <div className="space-y-6">
         <ComponentCard title="Basic Table 1">
-          <BasicTableOne orders={result!} />
+          <BasicTableOne page={pageNumber} number={trackingNum} user={searchUser} />
           {/* <Pagination  /> */}
         </ComponentCard>
       </div>

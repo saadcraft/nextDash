@@ -15,14 +15,9 @@ export const metadata: Metadata = {
 
 export default async function GestionProductPage() {
 
-    console.log("here")
     const products = await getProduct()
-    console.log("here2")
-    console.log(products)
 
     if (!products) notFound();
-
-    console.log("here3")
 
     const { result } = products;
 

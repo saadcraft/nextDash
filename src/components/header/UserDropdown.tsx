@@ -5,7 +5,7 @@ import { Dropdown } from "../ui/dropdown/Dropdown";
 import { DropdownItem } from "../ui/dropdown/DropdownItem";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
-import { clearSession } from "@/lib/session";
+import { Logout } from "@/lib/auth";
 
 export default function UserDropdown() {
   const [isOpen, setIsOpen] = useState(false);
@@ -14,8 +14,8 @@ export default function UserDropdown() {
 
   const loginOut = async () => {
     const loadingToast = toast.loading("Déconnexion ...", { position: "top-center", hideProgressBar: true });
-    const result = await clearSession()
-    if (result) {
+    const remove = await Logout();
+    if (remove) {
       toast.update(loadingToast, {
         render: "Déconnecté",
         type: "success",
