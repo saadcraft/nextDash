@@ -6,9 +6,9 @@ type typeGetOrders = {
     totalAct: number;
 }
 
-export async function getAllOrders({ page, number, user }: { page: string, number: string, user: string }): Promise<typeGetOrders | null> {
+export async function getAllOrders({ page, number, user, status }: { page: string, number: string, user: string, status?: string }): Promise<typeGetOrders | null> {
     try {
-        const response = await apiRequest(`/orders/all?page=${page}&number=${number}&user=${user}`, {
+        const response = await apiRequest(`/orders/all?page=${page}&number=${number}&user=${user}&status=${status || ""}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

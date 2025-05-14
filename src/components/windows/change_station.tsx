@@ -1,6 +1,7 @@
 import React from 'react'
 import { AlertTriangle } from "lucide-react"
 import { updateOrder } from '@/lib/orders-api'
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 export default function ChangeStationReminder({ onClose, Confirmation, refresh }:
     {
@@ -13,6 +14,8 @@ export default function ChangeStationReminder({ onClose, Confirmation, refresh }
         },
         refresh: () => void
     }) {
+
+    const queryClient = useQueryClient();
 
     const submite = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -27,6 +30,7 @@ export default function ChangeStationReminder({ onClose, Confirmation, refresh }
 
         if (send) {
             refresh()
+            queryClient.invalidateQueries({ queryKey: ["notification"] })
             onClose()
         }
     }
