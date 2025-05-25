@@ -97,20 +97,39 @@ export default function OrderInfo({ stat, colie, onClose }: {
                         data ?
 
                             data.orders.map((pre, index) => (
+                                pre.variant ?
 
-                                <div key={index} className="flex items-start space-x-4 py-4 border-b border-gray-700">
-                                    <div className="h-20 w-20 flex-shrink-0 bg-gray-800 rounded overflow-hidden">
-                                        <img src={process.env.IMGS_DOMAIN + pre.variant.product.primaryImage} alt="Product 1" className="w-full h-full object-cover" />
-                                    </div>
-                                    <div className="flex-1 min-w-0">
-                                        <p className="dark:text-white font-medium">{pre.variant.product.title}</p>
-                                        <p className="dark:text-gray-400 mt-1">{pre.variant.sku}</p>
-                                        <div className="flex justify-between mt-2">
-                                            <p className="dark:text-gray-400">Qty: {pre.quantity}</p>
-                                            <p className="dark:text-white font-medium">{pre.price} DA</p>
+                                    <div key={index} className="flex items-start space-x-4 py-4 border-b border-gray-700">
+                                        <div className="h-20 w-20 flex-shrink-0 bg-gray-800 rounded overflow-hidden">
+                                            <img src={process.env.IMGS_DOMAIN + pre.variant.product.primaryImage} alt="Product 1" className="w-full h-full object-cover" />
+                                        </div>
+                                        <div className="flex-1 min-w-0">
+                                            <p className="text-white font-medium">{pre.variant.product.title}</p>
+                                            <p className="text-gray-400 mt-1">{pre.variant.sku}</p>
+                                            <div className="flex justify-between mt-2">
+                                                <p className="text-gray-400">Qty: {pre.quantity}</p>
+                                                <p className="text-white font-medium">{pre.price} DA</p>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                    :
+                                    <div key={index} className="flex items-start space-x-4 py-4 border-b border-gray-700">
+                                        <div className={`h-20 w-20 flex-shrink-0 bg-[${pre.parsonalizer?.color}] rounded overflow-hidden`}>
+                                            {/* <span className={`w-full h-full bg-[${pre.parsonalizer?.color}]`} /> */}
+                                        </div>
+                                        <div className="flex-1 min-w-0">
+                                            <p className="text-white font-medium">{pre.parsonalizer?.text}</p>
+                                            <p className="text-gray-400 mt-1">{pre.parsonalizer?.font}</p>
+                                            <div className="flex justify-between mt-2">
+                                                <div className='flex flex-col md:flex-row gap-2'>
+                                                    <p className="text-gray-400">taille: {pre.parsonalizer?.height.toFixed(2)}cm X {pre.parsonalizer?.Width.toFixed(2)}cm</p>
+                                                    <p className="text-gray-400">Qty: {pre.quantity}</p>
+                                                </div>
+
+                                                <p className="text-white font-medium">{pre.price} DA</p>
+                                            </div>
+                                        </div>
+                                    </div>
                             ))
                             :
                             <p>nothing</p>

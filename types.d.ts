@@ -40,13 +40,23 @@ type ProductFormData = {
     images?: File[];
 }
 
+type Parsonalizer = {
+    height: number;
+    Width: number;
+    font: string;
+    text: string;
+    color: string;
+    materiel: string;
+}
 type Order = {
     _id: string;
-    variant: Variants;
+    variant?: Variants;
+    parsonalizer?: Parsonalizer;
     orderInfo: string;
     quantity: number;
     price: number;
 }
+
 
 type OrderInfo = {
     _id: string;
