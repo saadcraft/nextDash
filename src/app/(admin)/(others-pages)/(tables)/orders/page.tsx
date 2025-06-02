@@ -1,10 +1,10 @@
 import ComponentCard from "@/components/common/ComponentCard";
 import PageBreadcrumb from "@/components/common/PageBreadCrumb";
 import BasicTableOne from "@/components/tables/tableOrders";
-import { getAllOrders } from "@/lib/orders-api";
+// import { getAllOrders } from "@/lib/orders-api";
 // import Pagination from "@/components/tables/Pagination";
 import { Metadata } from "next";
-import { notFound } from "next/navigation";
+// import { notFound } from "next/navigation";
 import React from "react";
 
 export const metadata: Metadata = {
@@ -29,9 +29,9 @@ export default async function BasicTables({ searchParams }: props) {
 
   return (
     <div>
-      <PageBreadcrumb pageTitle="Basic Table" />
+      <PageBreadcrumb pageTitle="Orders" />
       <div className="space-y-6">
-        <ComponentCard title="Basic Table 1">
+        <ComponentCard title="Orders table">
           <BasicTableOne page={pageNumber} number={trackingNum} user={searchUser} />
           {/* <Pagination  /> */}
         </ComponentCard>

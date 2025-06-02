@@ -48,7 +48,7 @@ export default async function apiRequest(url: string, options: { method?: string
 
             }
 
-            console.log("aa", newSession)
+            // console.log("aa", newSession)
 
             response = await fetch(process.env.SERVER_DOMAIN + url, {
                 ...options,

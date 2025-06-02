@@ -71,3 +71,13 @@ type OrderInfo = {
     createdAt: string; // ISO date string
     updatedAt: string; // ISO date string
 }
+
+type Wilaya = {
+    _id: string;
+    name_send: string;
+    code_send: number;
+    name_recieve: string;
+    code_recieve: number;
+    prix_sd: number;
+    prix_domicile: number;
+}
