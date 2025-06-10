@@ -151,7 +151,7 @@ export default function AddTarifModal({ onClose, refresh }: OrderConfirmationMod
     //     }
     //   };
 
-    console.log(tarif)
+    // console.log(tarif)
 
     return (
         <div className="fixed inset-0 z-9998 flex items-center justify-center">
@@ -222,7 +222,7 @@ export default function AddTarifModal({ onClose, refresh }: OrderConfirmationMod
                             {tarif.length > 0 ?
                                 tarif.map((pre, index) => (
                                     <div key={index} className="w-full p-1">
-                                        <label htmlFor="nom" className="block text-sm font-medium mb-1">
+                                        <label htmlFor={`price_1_${pre.code}`} className="block text-sm font-medium mb-1">
                                             {pre.wilaya} <span className='text-red-600'>*</span>
                                         </label>
                                         <div className="grid grid-cols-2 gap-2">
@@ -241,7 +241,7 @@ export default function AddTarifModal({ onClose, refresh }: OrderConfirmationMod
                                             <div>
                                                 <input
                                                     type="text"
-                                                    id="nom"
+                                                    id={`price_2_${pre.code}`}
                                                     name={`price_2_${pre.code}`}
                                                     // value={}
                                                     // onChange={}

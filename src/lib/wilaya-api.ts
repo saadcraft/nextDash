@@ -29,7 +29,7 @@ export async function GetWilayas({ page, wilaya }: { page: string, wilaya: strin
 }
 
 export async function AddTarif(data: { [key: string | number]: unknown }) {
-    console.log('here', data)
+    // console.log('here', data)
     const loadingToast = toast.loading("Validé le Tarif...", { position: "bottom-right", hideProgressBar: true })
     try {
         const response = await apiRequest('/wilaya', {
@@ -42,6 +42,84 @@ export async function AddTarif(data: { [key: string | number]: unknown }) {
         if (response.code === 201) {
             toast.update(loadingToast, {
                 render: "Tarification a été ajouté",
+                type: "success",
+                isLoading: false,
+                autoClose: 3000,
+            })
+            return true;
+        } else {
+            toast.update(loadingToast, {
+                render: String(response.message),
+                type: "error",
+                isLoading: false,
+                autoClose: 3000,
+                // ...(res.code === 401 && { onClick: () => redirect("/signin") }),
+            })
+            return false;
+        }
+    } catch {
+        toast.update(loadingToast, {
+            render: "Problem connection",
+            type: "error",
+            isLoading: false,
+            autoClose: 3000,
+        })
+        return false;
+    }
+}
+
+export async function ModyTarif(data: { [key: string | number]: unknown }) {
+    // console.log('here', data)
+    const loadingToast = toast.loading("Validé le Tarif...", { position: "bottom-right", hideProgressBar: true })
+    try {
+        const response = await apiRequest(`/wilaya/${data.id}`, {
+            method: "PATCH",
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        if (response.code === 200) {
+            toast.update(loadingToast, {
+                render: "Tarification a été Modifié",
+                type: "success",
+                isLoading: false,
+                autoClose: 3000,
+            })
+            return true;
+        } else {
+            toast.update(loadingToast, {
+                render: String(response.message),
+                type: "error",
+                isLoading: false,
+                autoClose: 3000,
+                // ...(res.code === 401 && { onClick: () => redirect("/signin") }),
+            })
+            return false;
+        }
+    } catch {
+        toast.update(loadingToast, {
+            render: "Problem connection",
+            type: "error",
+            isLoading: false,
+            autoClose: 3000,
+        })
+        return false;
+    }
+}
+
+export async function DeleteTarif(id: string) {
+    const loadingToast = toast.loading("Supprimé le Tarif...", { position: "bottom-right", hideProgressBar: true })
+    try {
+        const response = await apiRequest(`/wilaya/${id}`, {
+            method: "DELETE",
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        if (response.code === 200) {
+            toast.update(loadingToast, {
+                render: "Tarification a été Supprimé",
                 type: "success",
                 isLoading: false,
                 autoClose: 3000,

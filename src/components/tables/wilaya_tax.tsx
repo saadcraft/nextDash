@@ -4,19 +4,55 @@ import React, { useState } from 'react'
 import { Table, TableBody, TableCell, TableHeader, TableRow } from '../ui/table';
 // import Image from 'next/image'
 import { useQuery } from '@tanstack/react-query';
-import { GetWilayas } from '@/lib/wilaya-api';
+import { DeleteTarif, GetWilayas } from '@/lib/wilaya-api';
 import { DollarSign, Pencil, Trash2 } from 'lucide-react';
 import LoadingFirst from '../options/loading';
 import AddTarifModal from '../windows/add_tarification';
+import ModyTarifModal from '../windows/modify_wilaya'
+import DeleteReminder from '../windows/delete_reminder';
 
 export default function WilayaTax({ page, wilaya }: { page: string, wilaya: string }) {
 
     const [addWilaya, setAddWilaya] = useState<boolean>(false)
+    const [modyWilaya, setModyWilaya] = useState<Wilaya | null>(null)
+    const [deleteConfirmation, setDeleteConfirmation] = useState<{
+        isOpen: boolean
+        productId: string | null
+        productName: string
+    }>({
+        isOpen: false,
+        productId: null,
+        productName: "",
+    })
+
+    const openDeleteConfirmation = (id: string, name: string) => {
+        setDeleteConfirmation({
+            isOpen: true,
+            productId: id,
+            productName: name,
+        })
+    }
+    const closeDeleteConfirmation = () => {
+        setDeleteConfirmation({
+            isOpen: false,
+            productId: null,
+            productName: "",
+        })
+    }
 
     const { isLoading, data, refetch } = useQuery({
         queryKey: ['orders'],
         queryFn: () => GetWilayas({ page: page, wilaya: wilaya }),
     })
+
+    const handleDelete = async (id: string) => {
+
+        const res = await DeleteTarif(id)
+        if (res) {
+            refetch()
+            closeDeleteConfirmation()
+        }
+    }
 
 
     return (
@@ -111,14 +147,14 @@ export default function WilayaTax({ page, wilaya }: { page: string, wilaya: stri
                                     <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
                                         <div className="flex justify-end gap-2">
                                             <button
-                                                // onClick={() => openUpdate(order._id)}
+                                                onClick={() => setModyWilaya(wilaya)}
                                                 className="inline-flex h-8 w-8 items-center justify-center rounded-md p-1 text-sm font-medium text-white bg-brand-500 shadow-sm hover:bg-brand-600 focus:outline-none focus:ring-blue-500 focus:ring-offset-2"
                                             >
                                                 <Pencil className="h-4 w-4" />
                                                 {/* <span className="sr-only">Edit {product.name}</span> */}
                                             </button>
                                             <button
-                                                // onClick={() => openDeleteConfirmation(order._id, order.title)}
+                                                onClick={() => openDeleteConfirmation(wilaya._id, wilaya.name_send + " to " + wilaya.name_recieve)}
                                                 className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-transparent bg-red-600 p-1 text-sm font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-red-500 focus:ring-offset-2"
                                             >
                                                 <Trash2 className="h-4 w-4" />
@@ -145,7 +181,12 @@ export default function WilayaTax({ page, wilaya }: { page: string, wilaya: stri
             }
             {addWilaya &&
                 <AddTarifModal onClose={() => setAddWilaya(false)} refresh={refetch} />
-
+            }
+            {modyWilaya &&
+                <ModyTarifModal onClose={() => setModyWilaya(null)} refresh={refetch} tarif={modyWilaya} />
+            }
+            {deleteConfirmation.isOpen &&
+                <DeleteReminder closeDelet={closeDeleteConfirmation} deleteConfirmation={deleteConfirmation} handleDelete={handleDelete} />
             }
         </div>
     );
