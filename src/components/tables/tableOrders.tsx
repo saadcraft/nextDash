@@ -180,7 +180,7 @@ export default function BasicTableOne({ page, number, user }: { page: string, nu
                           {order.fullname}
                         </span>
                         <span className="block text-gray-500 text-theme-xs dark:text-gray-400">
-                          items {order.orders.length}
+                          items {order?.orders?.length}
                         </span>
                       </div>
                     </div>
