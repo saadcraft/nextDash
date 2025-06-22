@@ -172,7 +172,7 @@ export default function AddTarifModal({ onClose, refresh }: OrderConfirmationMod
                 </div>
 
                 <form onSubmit={handleSave} className="space-y-5 dark:text-gray-300 ">
-                    <div className="max-h-[500px] overflow-auto p-1 grid md:grid-cols-2 grid-cols-1 gap-2 scrollbar-thin scrollbar-thumb-gray-900 scrollbar-track-transparent">
+                    <div className="max-h-[500px] overflow-auto p-1 grid md:grid-cols-2 grid-cols-1 gap-2 custom-scrollbar">
                         <div className="col-span-full gap-2 grid sm:grid-cols-2 grid-cols-1 sm:items-center">
                             <div className="">
                                 <label htmlFor="phoneNumber" className="block text-sm font-medium mb-1">
@@ -218,7 +218,7 @@ export default function AddTarifModal({ onClose, refresh }: OrderConfirmationMod
                             onChange={onChange}
                         />
 
-                        <div className="col-span-full flex flex-col justify-center items-center rounded-lg border p-1 min-h-[355px]">
+                        <div className="col-span-full flex flex-col justify-center items-center rounded-lg border p-1 border-gray-500 min-h-[355px]">
                             {tarif.length > 0 ?
                                 tarif.map((pre, index) => (
                                     <div key={index} className="w-full p-1">

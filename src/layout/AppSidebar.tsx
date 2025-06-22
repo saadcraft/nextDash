@@ -18,6 +18,7 @@ import {
   UserCircleIcon,
 } from "../icons/index";
 import SidebarWidget from "./SidebarWidget";
+import { Presentation } from "lucide-react"
 
 type NavItem = {
   name: string;
@@ -38,8 +39,8 @@ const navItems: NavItem[] = [
     path: "/calendar",
   },
   {
-    icon: <UserCircleIcon />,
-    name: "User Profile",
+    icon: <Presentation />,
+    name: "Landing page",
     path: "/profile",
   },
 
