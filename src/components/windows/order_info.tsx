@@ -1,9 +1,10 @@
 "use client"
 import { GetFullOrder } from '@/lib/orders-api';
 import { FormatDate } from '@/lib/tools/tool';
-import React, { useState } from 'react'
+import React from 'react'
 import { LoaderCircle } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
+import Image from 'next/image'
 
 export default function OrderInfo({ stat, colie, onClose }: {
     stat: ({ status }: {
@@ -13,7 +14,7 @@ export default function OrderInfo({ stat, colie, onClose }: {
     onClose: () => void
 }) {
     // const [isLoading, setIsLoading] = useState<boolean>(true)
-    const [orderInfo, setOrderInfo] = useState<OrderInfo | null>(null)
+    // const [orderInfo, setOrderInfo] = useState<OrderInfo | null>(null)
 
     const { isLoading, data } = useQuery({
         queryKey: ['orders' + colie._id],
@@ -101,7 +102,7 @@ export default function OrderInfo({ stat, colie, onClose }: {
 
                                     <div key={index} className="flex items-start space-x-4 py-4 border-b border-gray-700">
                                         <div className="h-20 w-20 flex-shrink-0 bg-gray-800 rounded overflow-hidden">
-                                            <img src={process.env.IMGS_DOMAIN + pre.variant.product.primaryImage} alt="Product 1" className="w-full h-full object-cover" />
+                                            <Image width={100} height={100} src={process.env.IMGS_DOMAIN + pre.variant.product.primaryImage} alt="Product 1" className="w-full h-full object-cover" />
                                         </div>
                                         <div className="flex-1 min-w-0">
                                             <p className="text-white font-medium">{pre.variant.product.title}</p>

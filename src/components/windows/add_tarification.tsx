@@ -6,7 +6,6 @@ import type React from "react"
 import { X, MapPinHouse } from "lucide-react"
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { useRouter } from "next/navigation";
 import Select, { ActionMeta, OnChangeValue } from 'react-select';
 import makeAnimated from 'react-select/animated';
 import { AddTarif } from "@/lib/wilaya-api";

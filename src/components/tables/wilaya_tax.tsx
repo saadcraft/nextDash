@@ -5,7 +5,7 @@ import { Table, TableBody, TableCell, TableHeader, TableRow } from '../ui/table'
 // import Image from 'next/image'
 import { useQuery } from '@tanstack/react-query';
 import { DeleteTarif, GetWilayas } from '@/lib/wilaya-api';
-import { DollarSign, Pencil, Trash2 } from 'lucide-react';
+import { Pencil, Trash2 } from 'lucide-react';
 import LoadingFirst from '../options/loading';
 import AddTarifModal from '../windows/add_tarification';
 import ModyTarifModal from '../windows/modify_wilaya'

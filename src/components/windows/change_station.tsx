@@ -1,7 +1,7 @@
 import React from 'react'
 import { AlertTriangle } from "lucide-react"
 import { updateOrder } from '@/lib/orders-api'
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function ChangeStationReminder({ onClose, Confirmation, refresh }:
     {

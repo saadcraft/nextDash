@@ -14,7 +14,7 @@ const AppHeader: React.FC = () => {
 
   const { isMobileOpen, toggleSidebar, toggleMobileSidebar } = useSidebar();
 
-  const { isLoading, data, refetch } = useQuery({
+  const { data } = useQuery({
     queryKey: ["notification"],
     queryFn: () => getAllOrders({ page: "", number: "", user: "", status: encodeURIComponent("En attente") }),
   })
