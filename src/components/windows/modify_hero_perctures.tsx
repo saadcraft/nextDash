@@ -3,11 +3,9 @@
 import React, { useState } from 'react'
 import Button from '../ui/button/Button'
 import Label from '../form/Label'
-import Input from '../form/input/InputField'
 import Image from 'next/image'
 import { TrashBinIcon } from '@/icons'
 import { useDropzone } from 'react-dropzone'
-import { UpdateProduct } from '@/lib/product-api'
 import { updateHeroPic } from '@/lib/dynamic'
 
 export default function ModifyHeroPerctures({ onClose, pictures, refresh }: { onClose: () => void, pictures: HeroPic, refresh: () => void }) {

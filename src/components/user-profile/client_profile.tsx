@@ -15,9 +15,12 @@ export default function ClientProfile() {
 
     console.log("from store : ", user)
 
-    const { data, isLoading, isError, refetch } = useQuery({
+    const { data, isError, refetch } = useQuery({
         queryKey: ['dynamo'],
-        queryFn: async () => await getDynamo(user?.dynamics!),
+        queryFn: async () => {
+            if (!user?.dynamics) return undefined;
+            return await getDynamo(user.dynamics);
+        },
         enabled: !!user?.dynamics
     })
 
@@ -28,7 +31,7 @@ export default function ClientProfile() {
     return (
         <div className="space-y-6">
             <UserMetaCard magasin={data!} />
-            <UserInfoCard magasin={data!} />
+            <UserInfoCard magasin={data!} refresh={refetch} />
             <UserAddressCard magasin={data!} refresh={refetch} />
         </div>
     )
