@@ -14,6 +14,7 @@ export const metadata: Metadata = {
 };
 
 export default async function GestionProductPage() {
+
     const products = await getProduct()
 
     if (!products) notFound();

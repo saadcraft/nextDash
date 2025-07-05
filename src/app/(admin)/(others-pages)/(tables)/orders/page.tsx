@@ -1,14 +1,14 @@
 import ComponentCard from "@/components/common/ComponentCard";
 import PageBreadcrumb from "@/components/common/PageBreadCrumb";
 import BasicTableOne from "@/components/tables/tableOrders";
-import { getAllOrders } from "@/lib/orders-api";
+// import { getAllOrders } from "@/lib/orders-api";
 // import Pagination from "@/components/tables/Pagination";
 import { Metadata } from "next";
-import { notFound, redirect } from "next/navigation";
+// import { notFound } from "next/navigation";
 import React from "react";
 
 export const metadata: Metadata = {
-  title: "Next.js Basic Table | TailAdmin - Next.js Dashboard Template",
+  title: "Orders",
   description:
     "This is Next.js Basic Table  page for TailAdmin  Tailwind CSS Admin Dashboard Template",
   // other metadata
@@ -26,18 +26,13 @@ export default async function BasicTables({ searchParams }: props) {
   const trackingNum = number || "";
   const searchUser = user || "";
 
-  const orders = await getAllOrders({ page: pageNumber, number: trackingNum, user: searchUser })
-
-  if (!orders) notFound();
-
-  const { result } = orders;
 
   return (
     <div>
-      <PageBreadcrumb pageTitle="Basic Table" />
+      <PageBreadcrumb pageTitle="Orders" />
       <div className="space-y-6">
-        <ComponentCard title="Basic Table 1">
-          <BasicTableOne orders={result} />
+        <ComponentCard title="Orders table">
+          <BasicTableOne page={pageNumber} number={trackingNum} user={searchUser} />
           {/* <Pagination  /> */}
         </ComponentCard>
       </div>

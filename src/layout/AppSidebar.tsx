@@ -15,9 +15,9 @@ import {
   PieChartIcon,
   PlugInIcon,
   TableIcon,
-  UserCircleIcon,
 } from "../icons/index";
 import SidebarWidget from "./SidebarWidget";
+import { Presentation } from "lucide-react"
 
 type NavItem = {
   name: string;
@@ -38,8 +38,8 @@ const navItems: NavItem[] = [
     path: "/calendar",
   },
   {
-    icon: <UserCircleIcon />,
-    name: "User Profile",
+    icon: <Presentation />,
+    name: "Landing page",
     path: "/profile",
   },
 
@@ -54,6 +54,7 @@ const navItems: NavItem[] = [
     subItems: [
       { name: "Orders table", path: "/orders", pro: false },
       { name: "Gestion Product", path: "/gestion_products", pro: false },
+      { name: "Wilaya", path: "/wilaya", pro: false },
     ],
   },
   {
@@ -97,9 +98,17 @@ const othersItems: NavItem[] = [
   },
 ];
 
+
+
 const AppSidebar: React.FC = () => {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
   const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
   const pathname = usePathname();
+
 
   const renderMenuItems = (
     navItems: NavItem[],
@@ -301,7 +310,7 @@ const AppSidebar: React.FC = () => {
           }`}
       >
         <Link href="/">
-          {isExpanded || isHovered || isMobileOpen ? (
+          {isClient && (isExpanded || isHovered || isMobileOpen) ? (
             <div className="flex items-center">
               <Image
                 className="dark:hidden"

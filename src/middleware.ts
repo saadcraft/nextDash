@@ -2,8 +2,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 // import { getToken } from 'next-auth/jwt';
-import { getIronSession } from 'iron-session';
-import { SessionData, sessionOptions } from './lib/sessionOptions';
+// import { getIronSession } from 'iron-session';
+// import { SessionData, sessionOptions } from './lib/sessionOptions';
 // import refreshAccessToken from './lib/cookies';
 // import { cookies } from 'next/headers';
 
@@ -15,17 +15,15 @@ export async function middleware(req: NextRequest) {
 
     const response = NextResponse.next();
 
+    const access = req.cookies.get("refresh_token")?.value;
+
     try {
         // Get the session using iron-session
-        const session = await getIronSession<SessionData>(
-            req as unknown as Request,
-            response as unknown as Response,
-            sessionOptions
-        );
-
-
-
-        // console.log("zaaabiiiiii", session.user)
+        // const session = await getIronSession<SessionData>(
+        //     req as unknown as Request,
+        //     response as unknown as Response,
+        //     sessionOptions
+        // );
 
         const path = req.nextUrl.pathname
         const isPublicRoute = publicRoutes.includes(path)
@@ -38,10 +36,10 @@ export async function middleware(req: NextRequest) {
         //     }
         // }
 
-        if (isProtectedRoute && !session.user) {
+        if (isProtectedRoute && !access) {
             return NextResponse.redirect(new URL("/signin", req.url)); // Redirect to login if not authenticated
         } else {
-            if (isPublicRoute && session.user) {
+            if (isPublicRoute && access) {
                 return NextResponse.redirect(new URL("/", req.url));
             }
         }
