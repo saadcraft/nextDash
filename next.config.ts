@@ -15,7 +15,7 @@ const nextConfig: NextConfig = {
     IMGS_DOMAIN: process.env.IMGS_DOMAIN,
   },
   images: {
-    domains: ['localhost', 'localhost:8000', '192.168.1.5'],
+    domains: ['localhost', 'localhost:8000', '192.168.1.5', '130.61.38.109'],
   },
   webpack(config) {
     config.module.rules.push({

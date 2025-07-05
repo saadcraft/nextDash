@@ -25,10 +25,6 @@ export async function middleware(req: NextRequest) {
         //     sessionOptions
         // );
 
-
-
-        // console.log("zaaabiiiiii", session.user)
-
         const path = req.nextUrl.pathname
         const isPublicRoute = publicRoutes.includes(path)
         const isProtectedRoute = !publicRoutes.includes(path);

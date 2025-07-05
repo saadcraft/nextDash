@@ -3,6 +3,8 @@
 // import { SessionData } from "./sessionOptions";
 // import { saveSession } from "./session";
 
+import apiRequest from "./request";
+
 
 type User = {
     username: string;
@@ -55,4 +57,22 @@ export async function Logout() {
         return null;
     }
 
+}
+
+export async function getUser(): Promise<UserAuth | null> {
+    try {
+        const response = await apiRequest(`/users`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        if (response.code == 200) {
+            return response.data
+        } else {
+            return null
+        }
+    } catch {
+        return null
+    }
 }

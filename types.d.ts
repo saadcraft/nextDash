@@ -22,12 +22,12 @@ type Variants = {
 }
 
 type UserAuth = {
-    id?: string;
+    _id?: string;
     username?: string;
     email?: string;
-    accessToken?: string;
-    refreshToken?: string;
-    expires_at?: number;
+    number: string;
+    role: 'ADMIN' | 'USER';
+    dynamics: string;
 }
 
 type Errors = {
@@ -38,6 +38,7 @@ type Errors = {
 type ProductFormData = {
     [key: string]: FormDataEntryValue | string[]; // Adjust if needed
     images?: File[];
+    image?: File[];
 }
 
 type Parsonalizer = {
@@ -80,4 +81,25 @@ type Wilaya = {
     code_recieve: number;
     prix_sd: number;
     prix_domicile: number;
+}
+
+type HeroPic = {
+    _id: string;
+    image: string[];
+    dynamic: string;
+}
+
+type FaqType = {
+    _id: string;
+    title: string;
+    description: string;
+}
+
+type DynamicType = {
+    _id: string;
+    magasine: string;
+    email: string;
+    phone: string;
+    fqa: FaqType[];
+    heroPictures: HeroPic;
 }

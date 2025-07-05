@@ -3,7 +3,9 @@ import { ThemeToggleButton } from "@/components/common/ThemeToggleButton";
 import NotificationDropdown from "@/components/header/NotificationDropdown";
 import UserDropdown from "@/components/header/UserDropdown";
 import { useSidebar } from "@/context/SidebarContext";
+import { getUser } from "@/lib/auth";
 import { getAllOrders } from "@/lib/orders-api";
+import { userInformation } from "@/lib/store/user.store";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
@@ -14,12 +16,23 @@ const AppHeader: React.FC = () => {
 
   const { isMobileOpen, toggleSidebar, toggleMobileSidebar } = useSidebar();
 
-  const { data } = useQuery({
-    queryKey: ["notification"],
-    queryFn: () => getAllOrders({ page: "", number: "", user: "", status: encodeURIComponent("En attente") }),
-  })
+  const { setUser } = userInformation()
 
-  console.log(data)
+  const { data: notifications } = useQuery({
+    queryKey: ["notification"],
+    queryFn: async () => await getAllOrders({ page: "", number: "", user: "", status: encodeURIComponent("En attente") }),
+  });
+
+  const { data: user } = useQuery({
+    queryKey: ["user"],
+    queryFn: async () => await getUser(),
+  });
+
+  useEffect(() => {
+    if (user) {
+      setUser(user);
+    }
+  }, [user, setUser]);
 
   const handleToggle = () => {
     if (window.innerWidth >= 991) {
@@ -173,7 +186,7 @@ const AppHeader: React.FC = () => {
             <ThemeToggleButton />
             {/* <!-- Dark Mode Toggler --> */}
 
-            <NotificationDropdown data={data?.result || []} />
+            <NotificationDropdown data={notifications?.result || []} />
             {/* <!-- Notification Menu Area --> */}
           </div>
           {/* <!-- User Area --> */}
