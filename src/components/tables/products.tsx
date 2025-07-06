@@ -148,7 +148,7 @@ export default function ProductTable({ product }: { product: Products[] }) {
                                         <div className="flex items-center gap-3">
                                             <div className="w-11 h-11 overflow-hidden rounded-md">
                                                 <Image
-                                                    src={`${process.env.SERVER_DOMAIN}${order.primaryImage}`}
+                                                    src={`${process.env.IMGS_DOMAIN}${order.primaryImage}`}
                                                     alt={order.title}
                                                     width={50} height={50}
                                                     className='h-full object-cover'

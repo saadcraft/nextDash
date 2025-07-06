@@ -261,7 +261,7 @@ export default function UpdateProducts({ id, closeModal }: { id: string, closeMo
                                                         <input name='oldPrimaryImage' id={pre} type='radio' value={pre} className="peer hidden" checked={selected === 'a' + index} onChange={() => setSelected('a' + index)} />
                                                         <label htmlFor={pre} className='relative rounded-lg peer-checked:border-2 peer-checked:border-blue-600 cursor-pointer' >
                                                             <span onClick={() => setRemovePic([pre, ...removePic])} className='absolute text-white right-0 bg-gray-500 opacity-40 hover:opacity-70 rounded-md'><TrashBinIcon /></span>
-                                                            <Image width={100} height={100} src={`${process.env.SERVER_DOMAIN}${pre}`} alt={pre} className='w-15 h-15 object-cover rounded-lg' />
+                                                            <Image width={100} height={100} src={`${process.env.IMGS_DOMAIN}${pre}`} alt={pre} className='w-15 h-15 object-cover rounded-lg' />
                                                         </label>
                                                         {/* <p>{pre.name}</p> */}
                                                     </div>
