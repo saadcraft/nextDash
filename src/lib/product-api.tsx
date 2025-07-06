@@ -16,9 +16,9 @@ type addProduct = {
     images: File[];
 }
 
-export async function getProduct(): Promise<typeGetProduct | null> {
+export async function getProduct({ page }: { page: string }): Promise<typeGetProduct | null> {
     try {
-        const response = await apiRequest('/products', {
+        const response = await apiRequest(`/products?page=${page}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -36,6 +36,28 @@ export async function getProduct(): Promise<typeGetProduct | null> {
         return null
     }
 }
+
+// export async function getVPSProduct(): Promise<typeGetProduct | null> {
+//     try {
+//         const response = await fetch('http://130.61.38.109:8001/products', {
+//             method: 'GET',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//             },
+//         })
+//         if (response.status == 200) {
+//             const data = await response.json()
+//             return {
+//                 result: data.result,
+//                 totalAct: data.totalPages
+//             }
+//         } else {
+//             return null
+//         }
+//     } catch {
+//         return null
+//     }
+// }
 
 export async function getSingleProduct(id: string): Promise<Products | null> {
     try {
