@@ -6,7 +6,6 @@ import UserInfoCard from './UserInfoCard'
 import UserAddressCard from './UserAddressCard'
 import { userInformation } from '@/lib/store/user.store'
 import { getDynamo } from '@/lib/dynamic'
-import { notFound } from 'next/navigation'
 import { useQuery } from '@tanstack/react-query'
 import { useModal } from '@/hooks/useModal'
 import { Modal } from "../ui/modal";
