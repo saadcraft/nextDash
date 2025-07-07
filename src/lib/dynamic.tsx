@@ -135,3 +135,65 @@ export async function updateDynamoinfo(id: string, Data: { [key: string]: unknow
         return false
     }
 }
+
+export async function addDynamo(Data: { [key: string]: unknown }): Promise<boolean> {
+    const loadingToast = toast.loading("Ajouté en cours ...", { position: "bottom-right", hideProgressBar: true })
+    const form = new FormData;
+    Object.entries(Data).forEach(([key, value]) => {
+        if (value instanceof Blob || value instanceof Array) {
+            // Handle file uploads properly
+            // Array.isArray(value) ? value.forEach(v => form.append(key, v)) : form.append(key, value);
+            if (Array.isArray(value)) {
+                value.forEach(v => form.append(key, v));
+            } else {
+                form.append(key, value);
+            }
+        } else {
+            form.append(key, String(value)); // Convert other values to string
+        }
+    });
+    try {
+        const response = await apiRequest(`/dynamic`, {
+            method: "POST",
+            body: form
+        });
+        if (response.code == 201) {
+            toast.update(loadingToast, {
+                render: "Landing page à Ajouté",
+                type: "success",
+                isLoading: false,
+                autoClose: 3000,
+            })
+            return true
+        } else {
+            toast.update(loadingToast, {
+                render: (
+                    <div className="w-full flex items-center justify-between">
+                        {response.message}
+                        {response.code === 401 &&
+                            <button
+                                onClick={() => redirect("/signin")}
+                                className="bg-blue-600 hover:bg-blue-500 text-white rounded-xl p-1"
+                            >
+                                Login
+                            </button>
+                        }
+                    </div>
+                ),
+                type: "error",
+                isLoading: false,
+                autoClose: 3000,
+                // ...(res.code === 401 && { onClick: () => redirect("/signin") }),
+            })
+            return false
+        }
+    } catch {
+        toast.update(loadingToast, {
+            render: "Problem connection",
+            type: "error",
+            isLoading: false,
+            autoClose: 3000,
+        })
+        return false
+    }
+}
