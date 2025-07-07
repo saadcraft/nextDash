@@ -39,6 +39,7 @@ type ProductFormData = {
     [key: string]: FormDataEntryValue | string[]; // Adjust if needed
     images?: File[];
     image?: File[];
+    heroPictures?: File[];
 }
 
 type Parsonalizer = {

@@ -120,7 +120,7 @@ export default function Pagination({ currentPage, pages, params }: props) {
           {pageNumbers.map((Num, index) => {
             if (Num === "...") {
               return (
-                <span key={index} className="bg-forth rounded-full text-primer sm:py-1 sm:px-3 cursor-pointer hover:bg-third">
+                <span key={index} className="bg-forth dark:text-white rounded-full text-primer sm:py-1 sm:px-3 cursor-pointer hover:bg-third">
                   {Num}
                 </span>
               )
@@ -131,7 +131,7 @@ export default function Pagination({ currentPage, pages, params }: props) {
                   handlePageChange(Number(Num));
                 }
               }}
-                key={index} className={`${Num == currentPage ? 'bg-primer text-white' : 'bg-forth'} rounded-full px-1 text-sm sm:text-base text-primer border border-primer sm:py-1 sm:px-3 cursor-pointer hover:bg-third`} title={`page${Num}`}>
+                key={index} className={`${Num == currentPage ? 'bg-fuchsia-400 text-white' : 'bg-forth'} rounded-full dark:text-white px-1 text-sm sm:text-base text-primer border border-primer sm:py-1 sm:px-3 cursor-pointer hover:bg-third`} title={`page${Num}`}>
                 {Num}
               </span>
             )
