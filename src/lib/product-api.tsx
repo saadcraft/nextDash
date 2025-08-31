@@ -18,7 +18,7 @@ type addProduct = {
 
 export async function getProduct({ page }: { page: string }): Promise<typeGetProduct | null> {
     try {
-        const response = await apiRequest(`/products?page=${page}`, {
+        const response = await apiRequest(`/products/app?page=${page}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

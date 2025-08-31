@@ -23,6 +23,7 @@ export default function AddProduct({ closeModal }: { closeModal: () => void }) {
 
     const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
 
+
     const [variants, setVariats] = useState<Variant[]>([
         {
             key: "",
